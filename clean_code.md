@@ -9,11 +9,19 @@ angle=sonar.readAngle()
 depth=depthSensor.getDepth()
 angle=sonar.getAngle()
 ```
-## Używanie nazw i wyrażeń języka jako dokumentacji zamiast komentarzy
+
+## Używanie jednego stylu
+Popularne style guide'y do Python'a:
+- [google](https://google.github.io/styleguide/pyguide.html)
+- [pep8](https://pep8.org/)
+
+Często strona dużej korporacji która często używa twojego języka będzie miała taki style guide. 
+
+## Używanie nazw jako dokumentacji zamiast komentarzy
 ```python
 # nie:
 def area(a, b, c):
-    # calculates area of triangle using its sides
+    # calculates area of a triangle using its sides
     p=(a+b+c)/2
     return sqrt(p*(p−a)*(p−b)*(p−c))
 
@@ -30,19 +38,41 @@ def triangleArea(sideA, sideB, sideC):
 ``` 
 - zmienne lokalne są całkowicie optymalizowane przez interpreter więc nie ma różnicy w wydajności tych dwóch funkcji.
 - nazwy są weryfikowane przez interpreter, komentarze nie, dlatego też komentarze często tracą aktualność
+- matematycy i fizycy dużo razy transformują swoje wzory, my nasze programy najczęściej czytamy
 
-Przykład użycia wyrażeń języka:
+## Używanie elementów języka jako dokumentacji zamiast komentarzy
+
+Przykład użycia elementów języka jako dokumentacji, dzięki `with` wiemy która część kodu używa builder'a:
 ```python
-with builder=Builder(result)
+a.normalize()
+
+with builder=Builder(result):
     builder.add(a)
     builder.add(b)
-result.init()
+
+result.preprocess()
 return result
 ``` 
+Oraz oczywiście wyjątki.
+```python
+# nie:
+# Will return None if there is no value
+def find(array, element):
+    ...
+
+# tak:
+def find(array, element):
+    ...
+    raise ElementNotFound()
+```
+
+Powinniśmy i tak w doc-string'u zapisać że funkcja wyrzuca wyjątek. Różnica jest jednak taka że wyjątek `ElementNotFound` w konsoli więcej mówi nam o tym co się stało niż `AttributeError: 'NoneType' object has no attribute <attribute>`.
+
+Niektóre języki wymagają też wpisywania wyjątków wyrzucanych przez funkcję w jej sygnaturze (Java) lub zwracania parametryzowanych enum'ów (Rust) zamiast używania wyjątków.
 
 ## Używanie nazw i skrótów charakterystycznych dla dziedziny 
-Na przykład piszemy `ip_address` a nie `internet_protocol_address`,
-ponieważ każdy programista zna ten skrót. 
+Przykład: piszemy `ip_address` a nie `internet_protocol_address`,
+ponieważ każdy programista wie co oznacza ten skrót. 
 
 ## Zasady czystego programowania
 - Do Not Repeat Yourself
@@ -60,7 +90,7 @@ ponieważ każdy programista zna ten skrót.
     - **Dependency inversion principle**
     One should "depend upon abstractions, [not] concretions."
 
-## Enkapsulacja (pojedyncza kropka w wyrażeniu)
+## Enkapsulacja 
 ```python
 browser.currentPage.body.header.add(element)
 ```
@@ -71,7 +101,7 @@ To utrudnia debugowanie i refactoring.
 
 ## Warstwy abstrakcji
 Przykładowo kod routing'owy aplikacji webowej nie powinien już edytować treści strony.
-Hierarchia takiej aplikacji webowej:
+Hierarchia takiej aplikacji webowej mogłaby wyglądać tak:
 - Router - dopasowywanie adresów do obiektów typu Page
     - Page - logika stron
         - File - czytanie z pliku
@@ -108,19 +138,31 @@ class Task():
         raise NotImplementeException()
 
     def __getattr_(self, attr):
-        self.components[attr]
+        return self.components[attr]
 
 class BallLocationTask(Task):
     def start():
         ...
 ```
-*A co jak się popusje?*
+### *A co jak "się popusje"?*
 - częste commit'y i szczegółowe branch'e
 - pisanie wyczerpujących testów dla nowego kodu 
-- dopisywanie testów przed refactoringiem po wcześniejszych konsultacjach z autorami  
+- dopisywanie testów przed refactoringiem po wcześniejszych konsultacjach z autorami
+- dotwarzanie dokumentacji w postaci komentarzy i doc-string'ów
 - komunikacja na temat kompetencji poszczególnych członków projektu
 - code review i wzajemna pomoc
 - dyskusja z pozostałymi członkami projektu na temat stanu kodu i opłacalności refactoringu
+
+## Częste błedy po przeczytaniu *Clean Code*
+- gigantyczne nazwy jak np:
+[AbstractBeanFactoryAwareAdvisingPostProcessor](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/aop/framework/autoproxy/AbstractBeanFactoryAwareAdvisingPostProcessor.html) w Spring Framework.
+- tworzenie niepotrzebnych abstrakcji; generalny plan działania ma wyglądać tak:
+    - minimalistyczna abstrakcja która wydaje nam się słuszna
+    - kod który chodzi poprawnie z tą abstrakcją
+    - konieczność doimplementowania funkcjonalności
+    - byle jakie doimplementowanie
+    - refactoring i rozszerzenie abstrakcji
+
 
 # Pragmatic programmer 
 ## Pojedyncze źródło prawdy
@@ -151,14 +193,15 @@ Zalety:
 - lepsza czytelność
 - mniej pisania
 - możliwość napisania dodatkowych narzędzi ze względu na prostotę języka
+- możliwość korzystania z pomocy nieprogramistów
 - dopasowanie do problemu
-
-## Komunikacja 
-Książka zaleca częstą i otwartą komunikację między zespołami oraz między zespołami a klientem. Krytykuje niekompetentne pośrednictwo oraz ukrywanie problemów i detali implementacji ze względu na chęć pokazania się z lepszej strony. Zaleca tworzenie szczegółowych dokumentów opisujących oczekiwane działanie programu.
 
 ## Prototypowanie 
 Dzielimy projekty na prototypy throw-away'e które służą tylko do eksploracji i **nie mogą** być rozwijane po jej zakończeniu oraz na prototypy które nadają się do rozwoju.
 Obydwa mają swój czas i miejsce.
+
+## Komunikacja 
+Książka zaleca częstą i otwartą komunikację między zespołami oraz między zespołami a klientem. Krytykuje niekompetentne pośrednictwo oraz ukrywanie problemów i detali implementacji ze względu na chęć pokazania się z lepszej strony. Zaleca tworzenie szczegółowych dokumentów opisujących oczekiwane działanie programu oraz dzielenie się wczesnymi prototypami.
 
 # Structure and Interpretation of Computer Programs
 ## Konsekwencje ręcznego zarządzania stanem programu
@@ -178,7 +221,7 @@ x=Random.value()
 // czego konsekwencją będzie konieczność przetrzymywania tej instancji w polu klasy.
 ```
 ## Pisząc program tworzysz język 
-Wraz z rozwojem programu dodajemy nowe typy, funkcje, makra i uzgodnienia.
+Wraz z rozwojem programu dodajemy nowe typy, funkcje, makra, uzgodnienia i konwencje.
 Dlatego też proces tworzenia programu odpowiada procesowi tworzeniu języka programowania 
 i powinniśmy się w nich kierować podobnymi regułami.
 
@@ -193,18 +236,32 @@ Przykładowe pytania:
 - zamiana polimorfii na kompozycję przy użyciu komponentów
 - odpowiedzialność obiektów na przykładzie wypożyczalni rowerów 
 - grafy powiązań i ich analizowanie 
-- testowanie przynależności obiektu do typu 
-
-# Popularne style guide'y
-- [google](https://google.github.io/styleguide/pyguide.html)
-- [pep8](https://pep8.org/)
+- testowanie przynależności obiektu do interfejsu 
 
 # Metody organizacji 
-- dependency injection (+ problemy z rozszerzaniem interfejsu) 
-- finite state machine 
+- dependency injection (+ problemy z rozszerzaniem interfejsu)  
 - komponenty 
 - mix-iny  
 - lambdy i funkcje jako wartości 
+
+
+## Finite state machine
+FSM to model maszyny która ma swój stan oraz może przechodzić z jednego stanu na drugi. Stany najczęściej modeluje się za pomocą klas zawierających konstruktor, metodę start i update. Tak wymodelowane stany mogą wchodzić w interakcję z otoczeniem oraz rządać przejścia do innego stanu lub własnej terminacji. Częste jest też użycie stosu do przetrzymywania kolejno aktywowanych stanów, wtedy wykonywany jest stan na jego górze, a po terminacji stanu zostaje on z zdjęty ze stosu.
+
+Przykład na postaci w grze:
+- walk 
+    - pozwala na chodzenie na boki 
+    - po naciśnięciu na spację wrzuca na stos stany jump i fall
+    - po naciśnięciu shift wrzuca na stos stan attack
+    - po straceniu kontaktu z gruntem wrzuca na stos stan fall
+- jump 
+    - w swojej metodzie start przykłada do postaci siłę skierowaną w górę
+    - kiedy przyspieszenie pionowe postaci przestaje mieć wartość dodatnią (ze względu na grawitację) ulega terminacji
+- fall
+    - po dotknięciu ziemi ulega terminacji
+- attack
+    - pokazuje animację
+    - po zakończeniu się animacji ulega terminacji
 
 ## Alternatywy dla wyjątków i wartości null 
 **Option\<T\>** to klasa która może ale nie musi zawierać wartości. 
