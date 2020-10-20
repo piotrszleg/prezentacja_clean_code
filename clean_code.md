@@ -27,15 +27,16 @@ def area(a, b, c):
 
 # tak:
 # source: https://www.matemaks.pl/wzory-na-pole-trojkata.html
-def triangleArea(sideA, sideB, sideC):
-    perimeter=sideA+sideB+sideC
-    halfOfPerimeter=perimeter/2
-    areaSquared=halfOfPerimeter
-              *(halfOfPerimeter−sideA)
-              *(halfOfPerimeter−sideB)
-              *(halfOfPerimeter−sideC)
-    return sqrt(areaSquared)
-``` 
+def triangleArea(side1, side2, side3):
+    perimeter=side1+side2+side3
+    half_of_perimeter=perimeter/2
+    area_squared=half_of_perimeter
+              *(half_of_perimeter−side1)
+              *(half_of_perimeter−side2)
+              *(half_of_perimeter−side3)
+    return sqrt(area_squared)
+```
+- pasowało by i tak dodać docstring z typami argumentów i typem zwracanej wartości
 - zmienne lokalne są całkowicie optymalizowane przez interpreter więc nie ma różnicy w wydajności tych dwóch funkcji.
 - nazwy są weryfikowane przez interpreter, komentarze nie, dlatego też komentarze często tracą aktualność
 - matematycy i fizycy dużo razy transformują swoje wzory, my nasze programy najczęściej czytamy
@@ -251,7 +252,7 @@ FSM to model maszyny która ma swój stan oraz może przechodzić z jednego stan
 Przykład na postaci w grze:
 - walk 
     - pozwala na chodzenie na boki 
-    - po naciśnięciu na spację wrzuca na stos stany jump i fall
+    - po naciśnięciu na spację wrzuca na stos stany fall i jump
     - po naciśnięciu shift wrzuca na stos stan attack
     - po straceniu kontaktu z gruntem wrzuca na stos stan fall
 - jump 
@@ -277,7 +278,7 @@ if sensor.hasValue:
     rotateTowards(sensor.value)
 
 # "prostsza" składnia
-sensor.read().ifHasValue(lambda v: rotateTowars(v))
+sensor.read().ifHasValue(lambda v: rotateTowards(v))
 
 # value field getter will raise error if there is no value
 rotateTowards(sensor.value)
@@ -328,12 +329,36 @@ Promise.all(promises)
 
 # Częste problemy 
 - duża ilość argumentów 
-  - weryfikowalna dict
-  - łańcuch wywołań withSize(5).withName("test").invoke() 
-- sekcje krytyczne 
+  - przekazywanie dict lub nazwanych argumentów 
+    ```python
+    schema=ArgumentsSchema(
+        name=str,
+        size=int
+        ...
+    )
+    def make(**args):
+        schema.verify(args)
+    ```
+  - łańcuch wywołań
+    ```python
+    class Make():
+        def with_size(self, size):
+            assert_type(size, int)
+            self.size=size
+            return self
+
+    Make.with_size(5).with_name("test").invoke()
+    ``` 
+- sekcje krytyczne z punktu widzenia wydajności
+    - komentarze a w nich ASCII art, linki, objaśnienia
+    - zrozumiałe nazwy
 - obchodzenie bugów i quirków w zewnętrznych bibliotekach 
+    - komentarze
+    - owijanie w przyjazne abstrakcje
 - implementowanie wzorów matematycznych i fizycznych 
-- modyfikacja obiektu czy utworzenie nowego (normalized a Normalize())
+    - używamy własnych nazw, nie literek ze wzoru
+    - przyjazne abstrakcje jak Vector3 lub Line
+- modyfikacja obiektu czy utworzenie nowego (`normalized` a `Normalize()`)
 - callbacks 
 
 # Efektywne testowanie 
@@ -342,9 +367,11 @@ Potrzebne pojęcia
 - dziedzina funkcji 
 - umowy nieformalne (komentarze, nazwy, typy)
 
-Mocking 
-- dobrze rozplątane obiekty powinny być łatwe do zastąpienia obiektami we wnętrzu których istnieją tylko asercje 
-- przykład component unity z asercjami w funkcjach wydarzeń 
+## Mocking
+
+Dobrze rozplątane obiekty powinny być łatwe do zastąpienia obiektami we wnętrzu których istnieją tylko asercje lub kod zapamiętujący operacje na nich wykonane. 
+
+Częste jest też zamienianie baz danych obiektami używającymi słowników, co znacząco przyspiesza test. Idąc tym tokiem myślenia dowolną powolną lub niewygodną funkcję lub obiekt można zastąpić mock'iem.
 ```python
 # tworzymy mock komponentu i sprawdzamy czy metody-eventy zostały wywołane
 class ComponentEventsTester(Component):
@@ -357,6 +384,16 @@ class ComponentEventsTester(Component):
 
     def start():
         self.expect_update.fulfill()
+
+    def finalize():
+        # jeżeli metody-eventy nie zostały wywołane to tutaj wyskoczy wyjątek
+        self.expect_start.finalize()
+        self.expect_update.finalize()
+
+test_component=ComponentEventsTester()
+system.add(test_component)
+system.run()
+test_component.finalize()
 
 # ten obiekt zbiera dane o użyciu bazy danych które później możemy sprawdzić asercjami
 class DatabaseUsageCollector(Database):
@@ -376,15 +413,17 @@ system.run(collector)
 assert(contains_name(collector.writes, "Piotr"))
 ```
 
-Testowane dużą ilością danych 
+## Testowane dużą ilością danych 
 - używanie własności, np: 2+5=5+2
-- konstrukcja danych które mają być zdekonstruowane przez system `(name,domain)`=>`name@domain`
+- konstrukcja danych które mają być później zdekonstruowane przez system `(name, domain)`=>`name@domain`
 - weryfikacja zewnętrzna dużej ilości danych 
 - testy polegające na badaniu jak system degeneruje się z czasem 
 - trafianie na wyjątki występujące dla danych z dziedziny 
 
-Szczegółowe testy
-- edge cases
+## Szczegółowe testy
+- podstawowe założenia funkcji lub obiektu
+- wyjątki - nie piszemy na zasadzie *może być, może nie być*, jeżeli w dokumentacji pisze że wyjątek jest to musi być a jego brak jest bug'iem
+- edge cases (0, pusta lista, ujemny indeks itp.)
 - załataniu bug'a powinno towarzyszyć utworzenie testu 
 - testy dedykowane pod coverage (odwiedzanie wszystkich ścieżek)
 
@@ -418,10 +457,11 @@ Funkcjonalność
 - typu result i promise oraz ściśle sprawdzanie poprawności ich użycia
 
 ## Task'i
- - taski jako parametryzowane stany w FSM że stosem 
+ - taski jako parametryzowane stany w FSM ze stosem 
  - zadania wkonywane w tle (wykrywanie obiektów, rozpoznawanie otoczenia)
-- każdy Task składałby się z dowolnie parametryzowanego konstruktora, init i update. 
+- każdy Task składałby się z dowolnie parametryzowanego konstruktora, start, update i cleanup. 
 - forwardowan'ie obsługi FSM, czujników, akcji i silników do klasy Task przy użyciu `__getattr__` i podobnych funkcji
+- mały rozmiar i kompozycja
 
 ```python
 def LocateAndDropMarker(target):
@@ -431,7 +471,7 @@ def LocateAndDropMarker(target):
             CenterOnTargetVertically(controller, target),
             GoForwardUntilHoveringOver(controller, target),
         ])),
-        FunctionToTask(lambda: controller.marker.drop())
+        FunctionTask(lambda: controller.marker.drop())
     ])
 
 class TasksSequence(Task):
@@ -450,6 +490,7 @@ class GoForwardUntilHoveringOver(Task):
     def __init__(controller, target):
         super(controller)
         self.target=target
+        self.saved_camera=self.camera_selector.selected
         self.camera_selector.select(Camera.BOTTOM)
 
     def start(self):
@@ -460,4 +501,7 @@ class GoForwardUntilHoveringOver(Task):
             return Task.FAILURE
         if self.vision.has_value:
             return Task.SUCCESS
+
+    def cleanup(self):
+        self.camera_selector.select(self.saved_camera)
 ```
