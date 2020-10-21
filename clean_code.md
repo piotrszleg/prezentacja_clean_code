@@ -556,8 +556,6 @@ class TasksSequence(Task):
 
     def start(self):
         for subtask in subtasks:
-            # push_subtask makes it so if any subtask
-            # fails the main task fails as well 
             self.push_task(subtask)
 
     def control_returned(self):
@@ -569,11 +567,12 @@ class TasksSequence(Task):
 class GoForwardUntilHoveringOver(Task):
     def __init__(controller, target):
         super().__init__(controller)
-        self.saved_camera=self.camera_selector.selected
-        self.vision.set_target(target)
-        self.camera_selector.select(Camera.BOTTOM)
+        self.target=target
 
     def start(self):
+        self.vision.set_target(self.target)
+        self.saved_camera=self.camera_selector.selected
+        self.camera_selector.select(Camera.BOTTOM)
         self.movement=Vector3.FORWARD*MAX_SPEED
 
     def update(self):
@@ -584,4 +583,5 @@ class GoForwardUntilHoveringOver(Task):
 
     def cleanup(self):
         self.camera_selector.select(self.saved_camera)
+        self.movement=Vector3.ZERO
 ```
