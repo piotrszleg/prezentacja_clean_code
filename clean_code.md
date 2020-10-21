@@ -1,4 +1,4 @@
-# Krótkie omówienie najciekawszych literatury 
+# Krótkie omówienie najciekawszej literatury 
 # Clean code
 ## Trzymanie się nazewnictwa 
 ```python
@@ -15,7 +15,7 @@ Popularne style guide'y do Python'a:
 - [google](https://google.github.io/styleguide/pyguide.html)
 - [pep8](https://pep8.org/)
 
-Często strona dużej korporacji która często używa twojego języka będzie miała taki style guide. 
+Często strona dużej korporacji która intensywnie używa danego języka będzie miała taki style guide. 
 
 ## Używanie nazw jako dokumentacji zamiast komentarzy
 ```python
@@ -27,7 +27,7 @@ def area(a, b, c):
 
 # tak:
 # source: https://www.matemaks.pl/wzory-na-pole-trojkata.html
-def triangleArea(side1, side2, side3):
+def triangle_area(side1, side2, side3):
     perimeter=side1+side2+side3
     half_of_perimeter=perimeter/2
     area_squared=half_of_perimeter
@@ -43,7 +43,7 @@ def triangleArea(side1, side2, side3):
 
 ## Używanie elementów języka jako dokumentacji zamiast komentarzy
 
-Przykład użycia elementów języka jako dokumentacji, dzięki `with` wiemy która część kodu używa builder'a:
+Przykład: dzięki `with` wiemy która część kodu używa obiektu builder'a:
 ```python
 a.normalize()
 
@@ -67,9 +67,9 @@ def find(array, element):
     raise ElementNotFound()
 ```
 
-Powinniśmy i tak w doc-string'u zapisać że funkcja wyrzuca wyjątek. Różnica jest jednak taka że wyjątek `ElementNotFound` w konsoli więcej mówi nam o tym co się stało niż `AttributeError: 'NoneType' object has no attribute <attribute>`.
+Powinniśmy i tak w docstring'u zapisać że funkcja wyrzuca wyjątek. Różnica jest jednak taka że wyjątek `ElementNotFound` w konsoli więcej mówi nam o tym co się stało niż `AttributeError: 'NoneType' object has no attribute <attribute>`.
 
-Niektóre języki wymagają też wpisywania wyjątków wyrzucanych przez funkcję w jej sygnaturze (Java) lub zwracania parametryzowanych enum'ów (Rust) zamiast używania wyjątków.
+Niektóre języki wymagają też wpisywania wyjątków wyrzucanych przez funkcję w jej sygnaturze (Java) lub zwracania parametryzowanych enum'ów zamiast używania wyjątków (Rust).
 
 ## Używanie nazw i skrótów charakterystycznych dla dziedziny 
 Przykład: piszemy `ip_address` a nie `internet_protocol_address`,
@@ -91,8 +91,13 @@ ponieważ każdy programista wie co oznacza ten skrót.
     - **Dependency inversion principle**
     One should "depend upon abstractions, [not] concretions."
 
-## Enkapsulacja 
-```python
+## Kapsułkowanie (Encapsulation) 
+- Tworzenie publicznego interfejsu klasy i ukrywanie prywatnych pól.
+- Komponenty powinny być widoczne tylko poprzez interfejs.
+TODO: roszerzyć
+
+## Zawieranie się obiektów
+```javascript
 browser.currentPage.body.header.add(element)
 ```
 Każdy element za kropką może być null'em. 
@@ -108,6 +113,7 @@ Hierarchia takiej aplikacji webowej mogłaby wyglądać tak:
         - File - czytanie z pliku
         - TemplateBuilder - łączy dynamiczne i statyczne częsci strony
             - StringBuilder - optymalnie wykonuje operacje na zmiennych typu string
+                - string - reprezentuje tekst
 
 ## Maksymalne rozbicie na metody i klasy 
 - jedna funkcja robi *jedną rzecz*
@@ -157,13 +163,13 @@ class BallLocationTask(Task):
 ## Częste błedy po przeczytaniu *Clean Code*
 - gigantyczne nazwy jak np:
 [AbstractBeanFactoryAwareAdvisingPostProcessor](https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/aop/framework/autoproxy/AbstractBeanFactoryAwareAdvisingPostProcessor.html) w Spring Framework.
+- usuwamy wszystko, globalny refactoring, zamieniamy wszystko na fabryki i abtrakcyjne klasy
 - tworzenie niepotrzebnych abstrakcji; generalny plan działania ma wyglądać tak:
     - minimalistyczna abstrakcja która wydaje nam się słuszna
     - kod który chodzi poprawnie z tą abstrakcją
     - konieczność doimplementowania funkcjonalności
     - byle jakie doimplementowanie
     - refactoring i rozszerzenie abstrakcji
-
 
 # Pragmatic programmer 
 ## Pojedyncze źródło prawdy
@@ -202,7 +208,9 @@ Dzielimy projekty na prototypy throw-away'e które służą tylko do eksploracji
 Obydwa mają swój czas i miejsce.
 
 ## Komunikacja 
-Książka zaleca częstą i otwartą komunikację między zespołami oraz między zespołami a klientem. Krytykuje niekompetentne pośrednictwo oraz ukrywanie problemów i detali implementacji ze względu na chęć pokazania się z lepszej strony. Zaleca tworzenie szczegółowych dokumentów opisujących oczekiwane działanie programu oraz dzielenie się wczesnymi prototypami.
+Książka zaleca częstą i otwartą komunikację między zespołami oraz między zespołami a klientem. Krytykuje niekompetentne pośrednictwo oraz ukrywanie problemów i detali implementacji ze względu na chęć pokazania się z lepszej strony. Zaleca tworzenie szczegółowych dokumentów opisujących oczekiwane działanie programu oraz dzielenie się wczesnymi prototypami. 
+
+Autorzy zalecają tworzenie dokumentacji kiedy program jest już stabilny, jednak implementacja programu na bazie już napisanej dokumentacji jest ich zdaniem bezsensowna i przede wszystkim męcząca.
 
 # Structure and Interpretation of Computer Programs
 ## Konsekwencje ręcznego zarządzania stanem programu
@@ -234,17 +242,38 @@ Przykładowe pytania:
 - Czy na użytkowników twoich klas oraz osób implemetujących stworzone przez ciebie interfejsy i klasy abstrakcyjne czekają pułapki?
 
 # Practical Object-Oriented Design in Ruby
+- stopniowy refactoring i ważene kosztu refactoringu z zyskami
 - zamiana polimorfii na kompozycję przy użyciu komponentów
 - odpowiedzialność obiektów na przykładzie wypożyczalni rowerów 
 - grafy powiązań i ich analizowanie 
 - testowanie przynależności obiektu do interfejsu 
 
-# Metody organizacji 
-- dependency injection (+ problemy z rozszerzaniem interfejsu)  
-- komponenty 
-- mix-iny  
+# Metody organizacji
 - lambdy i funkcje jako wartości 
 
+
+**Mix-in'y** - w Pythonie istnieje wielokrotne dziedziczenie więc mix-in'y nie są niczym niezwykłym, C# nie pozwala na mix-in'y całkowicie. 
+
+## Dependency injection 
+Tworzymy interface lub klasę bazową dla pewnych obiektów i używamy ją w systemie. Użytkownik naszego systemu może później stworzyć własne klasy używając tego wzorca które będą miały wymyśloną przez niego funkcjonalność a następnie zarejestrować je w systemie.
+
+```C#
+interface Operation<T> {
+    T perform(T a, T b);
+    T neutralValue {get;};
+}
+
+class Addition : Operation<int> {
+    public int perform(int a, int b){
+        return a+b;
+    }
+    int neutralValue => 0;
+}
+
+calculator.register("+", Addition);
+```
+
+Popularnymi przykładami użycia *dependency injection* są aktorzy w grach, komponenty i stany w *finite state machine*.
 
 ## Finite state machine
 FSM to model maszyny która ma swój stan oraz może przechodzić z jednego stanu na drugi. Stany najczęściej modeluje się za pomocą klas zawierających konstruktor, metodę start i update. Tak wymodelowane stany mogą wchodzić w interakcję z otoczeniem oraz rządać przejścia do innego stanu lub własnej terminacji. Częste jest też użycie stosu do przetrzymywania kolejno aktywowanych stanów, wtedy wykonywany jest stan na jego górze, a po terminacji stanu zostaje on z zdjęty ze stosu.
@@ -264,7 +293,9 @@ Przykład na postaci w grze:
     - pokazuje animację
     - po zakończeniu się animacji ulega terminacji
 
-## Alternatywy dla wyjątków i wartości null 
+Bardzo przydatny do rozkładania skomplikowanej funkcjonalności na kawałki, rozroszenia stanu programu na moduły i ułatwienia debuggowania.
+
+## Alternatywy dla wartości null, wyjątków i callback'ów 
 **Option\<T\>** to klasa która może ale nie musi zawierać wartości. 
 
 Jeśli jest dobrze napisana (oraz dobrze wspierana przez język i narzędzia) będzie wyrzucać łatwiejsze w interpretacji wyjątki oraz uławiać wykrywanie błędów w czasie pisania programu. 
@@ -283,7 +314,12 @@ sensor.read().ifHasValue(lambda v: rotateTowards(v))
 # value field getter will raise error if there is no value
 rotateTowards(sensor.value)
 ```
-**Result\<V, E\>** to klasa zawierająca wartość lub błąd. W przeciwieństwie do użycia raise użycie tego typu nie zaburza normalnego biegu proramu co może być bardzo korzystne przy analizie działania programu.
+
+W module `typing` istnieje typ `Optional[X]`, mówi on jednak jedynie o tym, że zwracana wartość może mieć wartość typu X lub None co może być wykorzystane przez type checker ale nie ma wpływu na zachowanie programu.
+
+**Result\<V, E\>** to klasa zawierająca wartość lub błąd. W przeciwieństwie do użycia raise użycie tego typu nie zaburza normalnego biegu programu co może być bardzo korzystne przy analizie jego działania.
+
+W module `typing` istnieje typ `Union[X, Y]`, mówi on jednak jedynie o tym, że zwracana wartość może mieć wartość typu X lub Y co może być wykorzystane przez type checker ale nie ma wpływu na zachowanie programu.
 
 **Promise\<V, E\>** reprezentuje proces który po jakimś czasie może zakończyć się sukcesem lub porażką.
 ```javascript
@@ -328,16 +364,17 @@ Promise.all(promises)
 - monkey patching i inne nietypowe dodatki do języka które upraszczają kod 
 
 # Częste problemy 
-- duża ilość argumentów 
+- duża ilość argumentów (funkcja powinna mieć maksymalnie 3 zwyczajne argumenty nie licząc self) 
   - przekazywanie dict lub nazwanych argumentów 
     ```python
     schema=ArgumentsSchema(
         name=str,
-        size=int
+        size=int,
         ...
     )
     def make(**args):
         schema.verify(args)
+        ...
     ```
   - łańcuch wywołań
     ```python
@@ -346,6 +383,8 @@ Promise.all(promises)
             assert_type(size, int)
             self.size=size
             return self
+
+        ...
 
     Make.with_size(5).with_name("test").invoke()
     ``` 
@@ -359,7 +398,10 @@ Promise.all(promises)
     - używamy własnych nazw, nie literek ze wzoru
     - przyjazne abstrakcje jak Vector3 lub Line
 - modyfikacja obiektu czy utworzenie nowego (`normalized` a `Normalize()`)
-- callbacks 
+- callback hell
+    - typy wspierające różne operacje (np. Promise) zamiast czystych wskaźników na funkcję
+    - funkcje asynchroniczne (w pythonie generatory)
+    - zupełna zmiana sposoby komunikacji między obeiktami (elm)
 
 # Efektywne testowanie 
 
@@ -382,7 +424,7 @@ class ComponentEventsTester(Component):
     def start():
         self.expect_start.fulfill()
 
-    def start():
+    def update():
         self.expect_update.fulfill()
 
     def finalize():
@@ -409,8 +451,9 @@ class DatabaseUsageCollector(Database):
         return None
 
 collector=DatabaseUsageCollector()
-system.run(collector)
+run_test_commands(system, collector)
 assert(contains_name(collector.writes, "Piotr"))
+...
 ```
 
 ## Testowane dużą ilością danych 
@@ -423,60 +466,91 @@ assert(contains_name(collector.writes, "Piotr"))
 ## Szczegółowe testy
 - podstawowe założenia funkcji lub obiektu
 - wyjątki - nie piszemy na zasadzie *może być, może nie być*, jeżeli w dokumentacji pisze że wyjątek jest to musi być a jego brak jest bug'iem
-- edge cases (0, pusta lista, ujemny indeks itp.)
+- edge cases (0, 1, -1, pusta lista, ujemny indeks itp.)
 - załataniu bug'a powinno towarzyszyć utworzenie testu 
 - testy dedykowane pod coverage (odwiedzanie wszystkich ścieżek)
 
 # Moje propozycje dotyczące modułu sterującego robota 
 ## Abstrakcyjny model łodzi
-Możliwość nakładania na siebie implementacji modelu na wzór warstw, np: konsolowy\*asercyjny\*unity
-implementacje modelu
-  - pełna wizualizacja w konsoli wartości czuników i silników
+Implementacje modelu
+  - wizualizująca w konsoli wartości czuników i silników
   - zapamiętująca przebieg do pliku
-  - odgrywająca przebieg z pliku
   - eksplorująca reakcje tasków na możliwe wartości z czujników
+  - sprawdzający poprawność danych wpływających i wypływających z modelu
   - unity
   - fizyczna
 
-Różne czujniki z taką pseudo notacją węgierską
-   - hasValue 
-   - getAngle 
-   - getEulerAngles 
-   - getPosition 
-   - getDistance 
-   - getScreenPosition 
+Rezygnacja z wypisywania rzeczy do konsoli na rzecz modelu zapamiętującego (będzie on tworzył pliki *human readable* i pozwalał na wizualizację).
 
-Funkcjonalność
-   - grabber.close
-   - grabber.open
-   - marker.drop
- - motors
-   - setValue 
-   - keepValue (konflikty jako wyjątki)
-- mockupy sensorów eksplorujące ich możliwe wartości
-- typu result i promise oraz ściśle sprawdzanie poprawności ich użycia
+Task odgrywający przebieg z pliku.
+
+Możliwość nakładania na siebie implementacji modelu na wzór warstw, np: konsolowy\*sprawdzjący\*zapamiętujący\*unity
+
+Rezygnacja z pliku ze stałymi konfigurującymi przebieg programu na rzecz interaktywnej pracy w konsoli.
+
+Model pełni jedynie rolę kontenera dla modułów (sensory, akcje, silniki), nie wprowadza własnej funkcjonalności.
+
+Czujniki z taką pseudo notacją węgierską (mówiącą o zwracanej wartości)
+- has_value 
+- get_angle 
+- get_euler_angles 
+- get_position 
+- get_distance 
+- get_screen_position 
+
+Każdy czujnik może zwrócić wartość `Fallback` która spowoduje przejście do czujnika z kolejnego modelu lub błąd krytyczny gdy takiego brak.
+
+funkcjonalność
+- grabber.close
+- grabber.open
+- grabber.is_open
+- marker.drop
+slinki
+- set_value 
+- get_value
+- keep_value (konflikty jako wyjątki)
+
+Model złożony przechodzi przez implemenetacje funkcjonalności i silników we wszystkich modelach i wszystkim zleca wykonanie zadania.
+
+Mockupy sensorów eksplorujące ich możliwe wartości
+```python
+self.echo_locator=SensorTester(
+    has_value=BooleansTester(),
+    get_angle=NumbersTester(
+                range=Range(0, 360), 
+                edge_cases=[None, 0, 90, 180, 360]
+              )
+    )
+```
+
+## Controller
+Klasa zajmująca się zarządzaniem stosem tasków oraz łączeniem tasków z modelem.
 
 ## Task'i
- - taski jako parametryzowane stany w FSM ze stosem 
- - zadania wkonywane w tle (wykrywanie obiektów, rozpoznawanie otoczenia)
-- każdy Task składałby się z dowolnie parametryzowanego konstruktora, start, update i cleanup. 
+- taski jako parametryzowane stany w FSM ze stosem 
+- zadania wkonywane między cyklami (wykrywanie obiektów, rozpoznawanie otoczenia, diagnostyka)
+- każdy Task składałby się z dowolnie parametryzowanego konstruktora, start, update i cleanup.
+- możliwość konfigurowania update-rate 
 - forwardowan'ie obsługi FSM, czujników, akcji i silników do klasy Task przy użyciu `__getattr__` i podobnych funkcji
 - mały rozmiar i kompozycja
 
 ```python
-def LocateAndDropMarker(target):
+def LocateAndDropMarker(controller, target):
     return TasksSequence([
-        RepeatUntilSuccess(TasksSequence([
-            FindTarget(controller, target),
-            CenterOnTargetVertically(controller, target),
-            GoForwardUntilHoveringOver(controller, target),
-        ])),
+        LocateOnTheGround(target),
         FunctionTask(lambda: controller.marker.drop())
     ])
 
+def LocateOnTheGround(controller, target):
+    return RepeatUntilSuccess(TasksSequence([
+        FindTarget(controller, target),
+        CenterOnTargetVertically(controller, target),
+        GoForwardUntilHoveringOver(controller, target),
+    ]))
+
 class TasksSequence(Task):
     def __init__(controller, subtasks):
-        super(controller)
+        super().__init__(controller)
         self.target=target
         self.subtasks=subtasks
 
@@ -484,13 +558,19 @@ class TasksSequence(Task):
         for subtask in subtasks:
             # push_subtask makes it so if any subtask
             # fails the main task fails as well 
-            self.push_subtask(subtask)
+            self.push_task(subtask)
+
+    def control_returned(self):
+        for subtask in subtasks:
+            if not subtask_succeded:
+                return Task.FAILURE
+        return Task.SUCCESS
 
 class GoForwardUntilHoveringOver(Task):
     def __init__(controller, target):
-        super(controller)
-        self.target=target
+        super().__init__(controller)
         self.saved_camera=self.camera_selector.selected
+        self.vision.set_target(target)
         self.camera_selector.select(Camera.BOTTOM)
 
     def start(self):
