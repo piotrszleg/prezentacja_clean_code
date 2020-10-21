@@ -151,7 +151,7 @@ class BallLocationTask(Task):
     def start():
         ...
 ```
-### *A co jak "się popusje"?*
+### *A co jak "się popsuje"?*
 - częste commit'y i szczegółowe branch'e
 - pisanie wyczerpujących testów dla nowego kodu 
 - dopisywanie testów przed refactoringiem po wcześniejszych konsultacjach z autorami
@@ -418,8 +418,8 @@ Częste jest też zamienianie baz danych obiektami używającymi słowników, co
 # tworzymy mock komponentu i sprawdzamy czy metody-eventy zostały wywołane
 class ComponentEventsTester(Component):
     def __init__():
-        self.expect_start=AssertHappened
-        self.expect_update=AssertHappenedMultipleTimes
+        self.expect_start=AssertHappened()
+        self.expect_update=AssertHappenedMultipleTimes()
 
     def start():
         self.expect_start.fulfill()
@@ -544,7 +544,7 @@ def LocateAndDropMarker(controller, target):
 def LocateOnTheGround(controller, target):
     return RepeatUntilSuccess(TasksSequence([
         FindTarget(controller, target),
-        CenterOnTargetVertically(controller, target),
+        CenterOnTargetHorizontally(controller, target),
         GoForwardUntilHoveringOver(controller, target),
     ]))
 
