@@ -35,12 +35,11 @@
     # zamieniamy na:
     element.on_click()
     # gdzie różne elementy mają różne implementacje on_click
-
     ```
 - sekcje krytyczne z punktu widzenia wydajności
     - komentarze a w nich ASCII art, linki, objaśnienia
     - zrozumiałe nazwy
-- obchodzenie bugów i quirków w zewnętrznych bibliotekach 
+- obchodzenie bugów i quirk'ów w zewnętrznych bibliotekach 
     - komentarze
     - owijanie w przyjazne abstrakcje
 - monkey patching typów bazowych, specjalne pola i inne nietypowe dodatki do języka które upraszczają kod 

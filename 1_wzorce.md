@@ -2,7 +2,7 @@
 
 ## Funkcje jako wartości i anonimowe funkcje 
 
-Wielu nowych programistów nie zdaje sobie sprawy z tego że funkcje mogą być traktowane jako wartości (w większości nowoczesnych języków programowania). To pozwala na znaczące zwiększenie możliwości parametryzowania działania funkcji i w konsekwencji lepszy *code reuse*. Możemy ich także używać do tworzenia własnych *control flow statements*, np. własnych pętli czy mechanizmów wyboru.
+Wielu nowych programistów nie zdaje sobie sprawy z tego że funkcje mogą być traktowane jako wartości (przynajmniej w większości nowoczesnych języków programowania). To pozwala na znaczące zwiększenie możliwości parametryzowania działania funkcji i w konsekwencji lepszy *code reuse*. Możemy ich także używać do tworzenia własnych *control flow statements*, np. własnych pętli czy mechanizmów wyboru.
 
 Praktyczny przykład:
 ```C#
@@ -65,7 +65,7 @@ switch(value, {
 
 ## Mix-in'y
 
-**Mix-in'y** to innymi słowy fragmenty klas które mogą być *domieszane* do klas w trakcie ich deklaracji aby nadać im pewną funkcjonalność. Są one kwestią sporną ze względu na konflikty nazw i trudności w analizowaniu hierarchi klas które wprowadzają. W Pythonie istnieje wielokrotne dziedziczenie więc mix-in'y nie są w nim niczym niezwykłym. C# nie pozwala na mix-in'y całkowicie (można za to używać kompozycji i klas statycznych). 
+**Mix-in'y** to innymi słowy fragmenty klas które mogą być *domieszane* do klas w trakcie ich deklaracji aby nadać im pewną funkcjonalność. Są one kwestią sporną ze względu na konflikty nazw i trudności w analizowaniu hierarchi klas które wprowadzają. W Pythonie istnieje wielokrotne dziedziczenie więc mix-in'y nie są w nim niczym niezwykłym. C# nie pozwala na mix-in'y całkowicie (można za to używać interaface'ów, kompozycji i klas statycznych). 
 
 ## Dependency injection 
 Tworzymy interface lub klasę bazową dla pewnych obiektów i używamy ją w systemie. Użytkownik naszego systemu może później stworzyć własne klasy używając tego wzorca które będą miały wymyśloną przez niego funkcjonalność a następnie zarejestrować je w systemie.
@@ -106,7 +106,7 @@ Przykład na postaci w grze:
     - pokazuje animację
     - po zakończeniu się animacji ulega terminacji
 
-Bardzo przydatny do rozkładania skomplikowanej funkcjonalności na kawałki, rozroszenia stanu programu na moduły i ułatwienia debuggowania.
+Bardzo przydatny do rozkładania skomplikowanej funkcjonalności na kawałki, rozproszenia stanu programu na moduły i ułatwienia debuggowania.
 
 ## Alternatywy dla wartości null, wyjątków i callback'ów 
 **Option\<T\>** to klasa która może ale nie musi zawierać wartości. 
