@@ -505,7 +505,8 @@ funkcjonalność
 - grabber.open
 - grabber.is_open
 - marker.drop
-slinki
+
+silnki
 - set_value 
 - get_value
 - keep_value (konflikty jako wyjątki)
