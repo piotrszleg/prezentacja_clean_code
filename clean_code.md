@@ -243,16 +243,79 @@ Przykładowe pytania:
 
 # Practical Object-Oriented Design in Ruby
 - stopniowy refactoring i ważene kosztu refactoringu z zyskami
-- zamiana polimorfii na kompozycję przy użyciu komponentów
-- odpowiedzialność obiektów na przykładzie wypożyczalni rowerów 
+- zamiana polimorfii na kompozycję przy użyciu komponentów (*Composition over inheritance*)
 - grafy powiązań i ich analizowanie 
+- odpowiedzialność obiektów na przykładzie wypożyczalni rowerów 
 - testowanie przynależności obiektu do interfejsu 
 
 # Metody organizacji
-- lambdy i funkcje jako wartości 
 
+## Funkcje jako wartości i anonimowe funkcje 
 
-**Mix-in'y** - w Pythonie istnieje wielokrotne dziedziczenie więc mix-in'y nie są niczym niezwykłym, C# nie pozwala na mix-in'y całkowicie. 
+Wielu nowych programistów nie zdaje sobie sprawy z tego że funkcje mogą być traktowane jako wartości (w większości nowoczesnych języków programowania). To pozwala na znaczące zwiększenie możliwości parametryzowania działania funkcji i w konsekwencji lepszy *code reuse*. Możemy ich także używać do tworzenia własnych *control flow statements*, np. własnych pętli czy mechanizmów wyboru.
+
+Praktyczny przykład:
+```C#
+// in Utils.cs
+// calls action until it returns true or it is called tries times
+// returns true if action succeded
+public static bool Try(int tries, System.Func<bool> action)
+    {
+        while (tries > 0)
+        {
+            if (action()) return true;
+            else tries--;
+        }
+        return false;
+}
+
+// in Placer.cs
+public bool Place(Placeable toPlace, System.Func<Placeable, bool> restriction=null)
+{s
+    placed.Remove(toPlace);
+    toPlace.RotateRandomly();
+    return Utils.Try(maxTries, () =>
+    {
+        placingArea.Place(toPlace);
+        bool restrictionSatisifed = restriction == null || !restriction(toPlace);
+        if (restrictionSatisifed && !OverlapsWithAnother(toPlace))
+        {
+            placed.Add(toPlace);
+            toPlace.placer = this;
+            return true;
+        }
+        else return false;
+    });
+}
+```
+
+Prosta implementacja wyrażenia switch jako funkcja w Python'ie.
+```python
+from enum import Enum, auto
+
+def switch(value, options):
+    return options[value]()
+
+class UserType(Enum):
+    ADMIN=auto() 
+    NORMAL=auto()
+    BANNED=auto()
+
+value=UserType.ADMIN
+switch(value, {
+    UserType.ADMIN  : lambda: admin_console.open(),
+    UserType.NORMAL : lambda: user_page.open(),
+    UserType.BANNED : lambda: None
+})
+```
+
+## Event'y
+
+**Event'y** najczęsciej rozumiemy jako listę funkcji do której możemy swobodnie dodawać i usuwać elementy. Następnie możemy je wszystkie naraz wywołać co powoduje kolejne wywołanie tych funkcji z danymi arguemntami. Mają one ogromne zastosowanie w UI (*OnClick*, *OnHover*, etc.).
+
+## Mix-in'y
+
+**Mix-in'y** to innymi słowy fragmenty klas które mogą być *domieszane* do klas w trakcie ich deklaracji aby nadać im pewną funkcjonalność. Są one kwestią sporną ze względu na konflikty nazw i trudności w analizowaniu hierarchi klas które wprowadzają. W Pythonie istnieje wielokrotne dziedziczenie więc mix-in'y nie są w nim niczym niezwykłym. C# nie pozwala na mix-in'y całkowicie (można za to używać kompozycji i klas statycznych). 
 
 ## Dependency injection 
 Tworzymy interface lub klasę bazową dla pewnych obiektów i używamy ją w systemie. Użytkownik naszego systemu może później stworzyć własne klasy używając tego wzorca które będą miały wymyśloną przez niego funkcjonalność a następnie zarejestrować je w systemie.
