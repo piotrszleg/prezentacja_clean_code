@@ -37,8 +37,11 @@
     # gdzie różne elementy mają różne implementacje on_click
     ```
 - sekcje krytyczne z punktu widzenia wydajności
-    - komentarze a w nich ASCII art, linki, objaśnienia
     - zrozumiałe nazwy
+    - komentarze a w nich:
+        - ASCII art
+        - linki do źródeł
+        - objaśnienia
 - obchodzenie bugów i quirk'ów w zewnętrznych bibliotekach 
     - komentarze
     - owijanie w przyjazne abstrakcje

@@ -18,7 +18,7 @@ Rezygnacja z pliku ze stałymi konfigurującymi przebieg programu na rzecz inter
 
 Model pełni jedynie rolę kontenera dla modułów (sensory, akcje, silniki), nie wprowadza własnej funkcjonalności.
 
-Czujniki z taką pseudo notacją węgierską (mówiącą o zwracanej wartości)
+Czujniki z taką pseudo notacją mówiącą o zwracanej wartości jak na przykład:
 - has_value 
 - get_angle 
 - get_euler_angles 
@@ -36,7 +36,7 @@ funkcjonalność
 
 silnki
 - set_value 
-- get_value
+- get_value 
 - keep_value (konflikty jako wyjątki)
 
 Model złożony przechodzi przez implemenetacje funkcjonalności i silników we wszystkich modelach i wszystkim zleca wykonanie zadania.
@@ -90,8 +90,8 @@ class TasksSequence(Task):
     def control_returned(self):
         for subtask in subtasks:
             if not subtask_succeded:
-                return Task.FAILURE
-        return Task.SUCCESS
+                self.fail()
+        self.succeed()
 
 class GoForwardUntilHoveringOver(Task):
     def __init__(controller, target):
@@ -106,11 +106,16 @@ class GoForwardUntilHoveringOver(Task):
 
     def update(self):
         if self.collision_detector.has_value:
-            return Task.FAILURE
+            self.fail()
         if self.vision.has_value:
-            return Task.SUCCESS
+            self.succeed()
 
     def cleanup(self):
         self.camera_selector.select(self.saved_camera)
         self.movement=Vector3.ZERO
 ```
+
+## Konfiguracja
+Myślę że Python jest wystarczająco ekspresyjnym i prostym językiem aby można w nim było zapisywać całą konfigurację.
+
+Co chciałbym jednak zmienić to rozbicie na podpliki. Unikałbym tworzenia sztucznych przestrzeni nazw przy użyciu klas ponieważ utrudniają one czytelność i importowanie. Dzięki temu będziemy mogli importować stałe w ten sposób `from config.model.movement import SPEED` ze wszystkimi zaletami statystycznej weryfikacji kodu.
