@@ -7,6 +7,7 @@ Wielu nowych programistów nie zdaje sobie sprawy z tego że funkcje mogą być 
 Praktyczny przykład:
 ```C#
 // in Utils.cs
+
 // calls action until it returns true or it is called tries times
 // returns true if action succeded
 public static bool Try(int tries, System.Func<bool> action)
@@ -20,18 +21,19 @@ public static bool Try(int tries, System.Func<bool> action)
 }
 
 // in Placer.cs
-public bool Place(Placeable toPlace, System.Func<Placeable, bool> restriction=null)
+
+using Restriction = System.Func<Placeable, bool>;
+
+public bool Place(Placeable toPlace, Restriction restriction = null, int? maxTries = null)
 {
     placed.Remove(toPlace);
     toPlace.RotateRandomly();
-    return Utils.Try(maxTries, () =>
+    return Utils.Try(maxTries.GetValueOrDefault(this.maxTries), () =>
     {
         placingArea.Place(toPlace);
-        bool restrictionSatisifed = restriction == null || !restriction(toPlace);
-        if (restrictionSatisifed && !OverlapsWithAnother(toPlace))
+        if (RestrictionSatisfied(restriction, toPlace) && !OverlapsWithAnother(toPlace))
         {
-            placed.Add(toPlace);
-            toPlace.placer = this;
+            FinalizePlacing(toPlace);
             return true;
         }
         else return false;
@@ -168,3 +170,44 @@ Promise.all(promises)
 // możliwe jest też dodanie własnych metod
 // do prototypu Promise
 ```
+
+## Proste optymalizacje
+Poniżej przedstawiam dwie optymalizacje które nie modyfikują interface'u ale pozwalają znacząco zwiększyć wydajność implementacji. Jest to na tyle istotne, że pozwala nam na stworzenie interface'ów które w normalnych warunkach okrutnie marnowałby zasoby.
+
+Cache'ing polega on na zapamiętywaniu wyników kosztownych operacji do przyszłego użycia, co przyspiesza program kosztem zużycia pamięci.
+
+```python
+# użycie zmiennej globalnej jest tutaj dla uproszczenia
+# w bibliotece powinna się znaleźć możliwość usunięcia cache'u 
+# lub jego automatyczne usuwanie
+
+saved={
+    0 : 0,
+    1 : 1
+}
+def fibonacci(n):
+    global saved
+    if n in saved:
+        return saved[n]
+    else:
+        result=fibonacci(n-1)+fibonacci(n-2)
+        saved[n]=result
+        return result
+
+# po wywołaniu fibonacci(n) w saved
+# znajdą się wszystkie wartości użyte do obliczenia n
+```
+
+Możemy też przyspieszać program poprzez sprawdzanie czy dana operacja jest potrzebna.
+
+```python
+class Engine:
+    def set_value(value):
+        if self.last_value!=value:
+            # self.connection.send jest bardzo kosztowną operacją
+            self.connection.send(f"set {self.name} {value}")
+            self.last_value=value
+```
+
+Bardzo często możemy uprościć dodawanie tych optymalizacji poprzez użycie dekoratorów lub klas generycznych. 
+Przykładowo biblioteka `functools` zawiera dekorator `cache` który robi dokładnie to co pokazałem w pierwszym prykładzie dla dowolnej funkcji.
