@@ -37,4 +37,4 @@ Obydwa mają swój czas i miejsce.
 ## Komunikacja 
 Książka zaleca częstą i otwartą komunikację między zespołami oraz między zespołami a klientem. Krytykuje niekompetentne pośrednictwo oraz ukrywanie problemów i detali implementacji ze względu na chęć pokazania się z lepszej strony. Zaleca tworzenie szczegółowych dokumentów opisujących oczekiwane działanie programu oraz dzielenie się wczesnymi prototypami. 
 
-Autorzy zalecają tworzenie dokumentacji kiedy program jest już stabilny, jednak implementacja programu na bazie już napisanej dokumentacji jest ich zdaniem bezsensowna i przede wszystkim męcząca.
+Autorzy zalecają tworzenie dokumentacji kiedy program jest już w miarę stabilny, jednak implementacja programu na bazie już napisanej dokumentacji jest ich zdaniem bezsensowna i przede wszystkim męcząca.
