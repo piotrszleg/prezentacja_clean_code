@@ -1,4 +1,17 @@
-# Metody organizacji i wzorce projektowe
+# Narzędzia
+
+## Programy
+- generatory dokumentacji
+- formatery
+- programy sprawdzające typy
+- lintery
+
+## Biblioteki
+- pytest / inne biblioteki do testowania
+- fastcore - uproszczone mokey patching i type dispatch
+- dataclass - dodaje operatory i funkcje dla klas które służą jedynie przetrzymywaniu danych
+- abc - definiowanie abstrakcyjnych klas 
+
 
 ## Funkcje jako wartości i anonimowe funkcje 
 

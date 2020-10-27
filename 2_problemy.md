@@ -21,7 +21,7 @@
 
         ...
 
-    Make.with_size(5).with_name("test").invoke()
+    Make().with_size(5).with_name("test").invoke()
     ``` 
 - zamiana ciągu ifów/switcha na polimorfię
     ```python
