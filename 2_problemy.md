@@ -55,4 +55,4 @@
 - callback hell
     - typy wspierające różne operacje (np. Promise) zamiast czystych wskaźników na funkcję
     - funkcje asynchroniczne (w pythonie generatory)
-    - zupełna zmiana sposoby komunikacji między obiektami (Elm)
+    - zupełna zmiana sposobu komunikacji między obiektami (Elm)

@@ -76,7 +76,7 @@ switch(value, {
 
 ## Event'y
 
-**Event'y** najczęsciej rozumiemy jako listę funkcji do której możemy swobodnie dodawać i usuwać elementy. Następnie możemy je wszystkie naraz wywołać co powoduje kolejne wywołanie tych funkcji z danymi arguemntami. Mają one ogromne zastosowanie w UI (*OnClick*, *OnHover*, etc.).
+**Event'y** najczęsciej rozumiemy jako listę funkcji do której możemy swobodnie dodawać i usuwać elementy. Następnie możemy je wszystkie naraz wywołać co powoduje kolejne wywołanie tych funkcji z danymi argumentami. Mają one ogromne zastosowanie w UI (*OnClick*, *OnHover*, etc.).
 
 ## Mix-in'y
 
@@ -98,7 +98,7 @@ class Addition : Operation<int> {
     int neutralValue => 0;
 }
 
-calculator.register("+", Addition);
+calculator.register("+", new Addition());
 ```
 
 Popularnymi przykładami użycia *dependency injection* są aktorzy w grach, komponenty i stany w *finite state machine*.
@@ -238,7 +238,7 @@ Musimy tutaj ważyć trzy rzeczy:
 - koszt pamięciowy zmiennej przetrzymującej ostatni stan
 - zwiększenie się złożoności kodu źródłowego
 
-### Strumienie
+## Strumienie
 
 Z zewnątrz operacje na strumieniach wyglądają jak tworzenie nowych tablic z tablic źródłowych. Jednak ich właściwa implementacja polega na nakładaniu na siebie operacji a następnie (gdy nadejdzie potrzeba) iteracji po źródłowym iteratorze i przeprawodzania tych operacji na zwróconych przez niego elementach. Możliwe jest też tworzenie nieskończonych strumieni, jednak jest to raczej używane w językach funkcyjnych.
 
