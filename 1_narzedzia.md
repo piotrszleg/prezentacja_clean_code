@@ -76,7 +76,7 @@ switch(value, {
 
 ## Event'y
 
-**Event'y** najczęsciej rozumiemy jako listę funkcji do której możemy swobodnie dodawać i usuwać elementy. Następnie możemy je wszystkie naraz wywołać co powoduje kolejne wywołanie tych funkcji z danymi argumentami. Mają one ogromne zastosowanie w UI (*OnClick*, *OnHover*, etc.).
+**Event'y** w programowaniu obiektowym najczęsciej rozumiemy jako listę funkcji do której możemy swobodnie dodawać i usuwać elementy. Następnie możemy je wszystkie naraz wywołać co powoduje kolejne wywołanie tych funkcji z danymi argumentami. Mają one ogromne zastosowanie w UI (*OnClick*, *OnHover*, etc.).
 
 ## Mix-in'y
 
@@ -214,11 +214,13 @@ def fibonacci(n):
 # po wywołaniu fibonacci(n) w saved
 # znajdą się wszystkie wartości użyte do obliczenia n
 # oraz wartość funkcji dla n
-# ich obliczenie jest teraz operacją O(n)+F
+# ich obliczenie jest teraz operacją O(1)
+# w przypadku typów innych niż int
+# w grę wchodzi też czas ich hash'owania
 ```
 
-Bardzo często możemy uprościć dodawanie tych optymalizacji poprzez użycie dekoratorów lub klas generycznych. 
-Przykładowo biblioteka `functools` zawiera dekorator `cache` który robi dokładnie to co pokazałem w pierwszym przykładzie dla dowolnej funkcji.
+Bardzo często możemy uprościć dodawanie optymalizacji poprzez użycie dekoratorów lub klas generycznych. 
+Przykładowo biblioteka `functools` zawiera dekorator `cache` który robi dokładnie to co pokazałem na przykładzie funkcji `fibonacci`.
 
 ### Omijanie kosztownych operacji
 Możemy też przyspieszać program poprzez sprawdzanie czy dana operacja jest potrzebna.
@@ -245,7 +247,7 @@ Z zewnątrz operacje na strumieniach wyglądają jak tworzenie nowych tablic z t
 Mają one jednak kilka wad:
 - mogą zmniejszać czytelność
 - są trudniejsze do debuggowania
-- mogą odstrazać nowych użytkowników
+- mogą odstraszać nowych użytkowników
 - wbudowane funkcje czasami zawierają pułapki
 
 Funkcje z biblioteki standardowej:
