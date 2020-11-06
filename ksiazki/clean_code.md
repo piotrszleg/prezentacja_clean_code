@@ -94,7 +94,6 @@ ponieważ każdy programista wie co oznacza ten skrót.
 ## Kapsułkowanie (Encapsulation) 
 - Tworzenie publicznego interfejsu klasy i ukrywanie prywatnych pól.
 - Komponenty powinny być widoczne tylko poprzez interfejs.
-TODO: roszerzyć
 
 ## Zawieranie się obiektów
 ```javascript
@@ -106,8 +105,13 @@ W tym momence jedna linijka mało istotnego kodu używa wiedzy o czterech warstw
 To utrudnia debugowanie i refactoring.
 
 ## Maksymalne rozbicie na metody i klasy 
-- jedna funkcja robi *jedną rzecz*
+- jedna funkcja robi *jedną rzecz* 
+    - częstym błędem jest wykonanie jakiejś funkcjonalności klasy w jej konstruktorze, powinien on tylko ustawić ją w poprawnym stanie początkowym
 - jedna klasa ma *jedną rolę*
+- warto powiedzieć sobie w myślach co robi funkcja lub klasa, zdanie które sformułujemy nie powinno być złożone. Przykłady rozbicia w zależności od użytych łączników zdań:
+    - i - kompozycja
+    - lub / jeżeli to - polimorfizm
+    - poprzez - dziedziczenie/kompozycja/klasa pomocnicza
 - użycie warstwy abstrakcji do osiągnięcia tych celów 
 
 ## Warstwy abstrakcji
