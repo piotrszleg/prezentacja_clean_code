@@ -1,4 +1,3 @@
-# Krótkie omówienie najciekawszej literatury 
 # Clean code
 ## Trzymanie się nazewnictwa 
 ```python

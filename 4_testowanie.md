@@ -4,6 +4,10 @@ Potrzebne pojęcia
 - dziedzina funkcji - wartości dla których została zaprojektowana funkcja
 - umowy (ang.: *contracts*) - komentarze, nazwy, typy i wiedza wspólna dla członków projektu na temat utworzonych klas i funkcji
 
+Testowanie ma dwa podstawowe zadania:
+- zapewnienie że aplikacja działa zgodnie z założeniami/dokumentacją
+- doprowadznie aplikacji do crash'u w bezpiecznym środowisku
+
 ## Mocking
 
 Dobrze rozplątane obiekty powinny być łatwe do zastąpienia obiektami we wnętrzu których istnieją tylko asercje lub kod zapamiętujący operacje na nich wykonane. 

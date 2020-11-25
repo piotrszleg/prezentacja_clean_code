@@ -2,13 +2,14 @@
 
 ## Programy
 - generatory dokumentacji
-- formatery
 - programy sprawdzające typy
 - lintery
+- **formatery** - możemy ustawić sobie formatowanie na skrócie klawiszowym lub przy zapisywaniu pliku w edytorze; dzięki temu możemy pisać kod kompletnie ignorując estetykę a formater będzie go formatował zgodnie ze wybraną przez nas konwencją *(prezentacja)*
 
 ## Biblioteki
 - pytest / inne biblioteki do testowania
-- fastcore - uproszczone mokey patching i type dispatch
+- functools
+- fastcore - uproszczone monkey patching i type dispatch
 - dataclass - dodaje operatory i funkcje dla klas które służą jedynie przetrzymywaniu danych
 - abc - definiowanie abstrakcyjnych klas 
 
