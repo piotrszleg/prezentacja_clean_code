@@ -36,6 +36,11 @@
     element.on_click()
     # gdzie różne elementy mają różne implementacje on_click
     ```
+
+- callback hell
+    - typy wspierające różne operacje (np. Promise) zamiast czystych wskaźników na funkcję
+    - funkcje asynchroniczne (w Pythonie i C# generatory)
+    - zupełna zmiana sposobu komunikacji między obiektami (Elm)
 - sekcje krytyczne z punktu widzenia wydajności
     - zrozumiałe nazwy
     - komentarze a w nich:
@@ -47,12 +52,36 @@
     - owijanie w przyjazne abstrakcje
 - monkey patching typów bazowych, specjalne pola i inne nietypowe dodatki do języka które upraszczają kod 
   - staraj się separować tę część kodu od reszty (osobne pliki, sekcje)
-  - możesz napisać czego używasz (tak aby dało się to "wygooglować") ale nie rób znowu całego wykładu (replikacja wiedzy)
+  - możesz napisać czego używasz (tak aby dało się to "wygooglować") ale nie rób znowu całego wykładu (bo jest to swego rodzaju replikacja wiedzy)
 - implementowanie wzorów matematycznych i fizycznych 
     - używamy własnych nazw, nie literek ze wzoru
     - przyjazne abstrakcje jak Vector3 lub Line
 - modyfikacja obiektu czy utworzenie nowego (`normalized` a `Normalize()`)
-- callback hell
-    - typy wspierające różne operacje (np. Promise) zamiast czystych wskaźników na funkcję
-    - funkcje asynchroniczne (w Pythonie i C# generatory)
-    - zupełna zmiana sposobu komunikacji między obiektami (Elm)
+- aplikacje czasu rzeczywistego 
+    - event'y
+    - funkcje asynchroniczne
+    - rozbicie na parametryzowalne i niezależne moduły
+    - interfejsy dyktowane logiką programu a nie detalami implementacji
+    ```python
+    # nie
+    def set_target(self, target):
+        self.target=target
+
+    def approach(self, engine):
+        ...
+        return finished
+
+    self.set_target("gate")
+    while self.approach(engine):
+        sleep(10)
+        self.update_camera()
+        pass
+    
+    # tak
+    async def approach_target(self, target):
+        ...
+        return success
+
+    # Możliwość stworzenia przejrzystych interfejsów mocno zależy
+    # od możliwości języka oraz pozostałych klas i funkcji w projekcie.
+    ```
