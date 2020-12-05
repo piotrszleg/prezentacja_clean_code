@@ -18,7 +18,7 @@ Rezygnacja z pliku ze stałymi konfigurującymi przebieg programu na rzecz inter
 
 Model pełni jedynie rolę kontenera dla modułów (sensory, akcje, silniki), nie wprowadza własnej funkcjonalności.
 
-Czujniki z taką pseudo notacją mówiącą o zwracanej wartości jak na przykład:
+Czujniki z taką pseudo-węgierską notacją mówiącą o zwracanej wartości jak na przykład:
 - has_value 
 - get_angle 
 - get_euler_angles 
