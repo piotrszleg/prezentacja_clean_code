@@ -4,7 +4,14 @@ Potrzebne pojęcia
 - dziedzina funkcji - wartości dla których została zaprojektowana funkcja
 - umowy (ang.: *contracts*) - komentarze, nazwy, typy i wiedza wspólna dla członków projektu na temat utworzonych klas i funkcji
 
-Testowanie ma dwa podstawowe zadania:
+Testowanie ma następujące zadania:
+- dokumentacja funkcjonalności składowych programu
+    - przykład użycia klas i funkcji 
+    - określenie dziedziny funkcji i specjalnych przypadków
+    - sposób kodowania danych wejściowych i wyjściowych
+    - sposób użycia niestandardowej funkcjonalnośći (np. nadpisania operatorów)
+    - ogromnym plusem takiej dokumentacji jest to, że jest automatycznie sprawdzana i zawsze aktualna
+    - minusem jest to że jest mniej *user friendly*
 - zapewnienie że aplikacja działa zgodnie z założeniami/dokumentacją
 - doprowadznie aplikacji do crash'u w bezpiecznym środowisku
 
@@ -12,7 +19,7 @@ Testowanie ma dwa podstawowe zadania:
 
 Dobrze rozplątane obiekty powinny być łatwe do zastąpienia obiektami we wnętrzu których istnieją tylko asercje lub kod zapamiętujący operacje na nich wykonane. 
 
-Częste jest też zamienianie baz danych obiektami używającymi słowników, co znacząco przyspiesza test. Idąc tym tokiem myślenia dowolną powolną lub niewygodną funkcję lub obiekt można zastąpić mock'iem.
+Częstą praktyką jest też mock'owanie baz danych obiektami używającymi słowników, co znacząco przyspiesza test. Idąc tym tokiem myślenia dowolną powolną lub niewygodną funkcję lub obiekt można zastąpić mock'iem.
 ```python
 # tworzymy mock komponentu i sprawdzamy czy metody-eventy zostały wywołane
 class ComponentEventsTester(Component):
@@ -57,12 +64,39 @@ assert(contains_name(collector.writes, "Piotr"))
 ...
 ```
 
+Bardzo często tworzenie mock'ów można przyspieszać używając meta-programowania (jest też do tego mnóstwo bibliotek)
+
+```python
+# klasa której w konstruktorze podajemy jakie
+# metody i pola ma posiadać
+class Mock:
+    def __init__(self, fields, methods):
+        self.fields=fields
+        self.methods=methods
+    
+    def __getattr__(self, key):
+        if key in self.fields:
+            return None
+        elif key in self.methods:
+            def unit(*args, **kwargs):
+                return (args, kwargs)
+            return unit
+        else:
+            raise AttributeError()
+
+m=Mock(['x', 'y'], ["length"])
+m.x # valid
+m.length() # valid, but returns ()
+m.t # attribute error
+```
+
 ## Testowane dużą ilością danych 
 - używanie własności, np: 2+5=5+2
 - konstrukcja danych które mają być później zdekonstruowane przez system `(name, domain)`=>`name@domain`
 - weryfikacja zewnętrzna dużej ilości danych 
 - testy polegające na badaniu jak system degeneruje się z czasem 
 - trafianie na wyjątki występujące dla danych z dziedziny 
+- (`examples/vector_tests.py`)
 
 ## Szczegółowe testy
 - podstawowe założenia funkcji lub obiektu
