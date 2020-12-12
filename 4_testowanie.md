@@ -3,6 +3,9 @@
 Potrzebne pojęcia
 - dziedzina funkcji - wartości dla których została zaprojektowana funkcja
 - umowy (ang.: *contracts*) - komentarze, nazwy, typy i wiedza wspólna dla członków projektu na temat utworzonych klas i funkcji
+- deterministyczność - testy powinny za każdym razem i w każdym środowsiku działać tak samo, czyli odpada:
+    - `random` bez wczęsniejszego wywołania `seed` ze stałą 
+    - użycie programów typu `ffmpeg` nie zaznacznych w instrukcji do instalacji i bez określonej wersji
 
 Testowanie ma następujące zadania:
 - dokumentacja funkcjonalności składowych programu
