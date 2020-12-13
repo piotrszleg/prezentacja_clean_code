@@ -30,7 +30,7 @@ class Vector:
         length=self.length
         # celowy bład który będziemy próbować złapać
         # if length==0:
-        #     return Vector(1, 0)
+        #     return Vector(0, 0)
         return Vector(self.x/length, self.y/length)
 
     def __eq__(self, other):
