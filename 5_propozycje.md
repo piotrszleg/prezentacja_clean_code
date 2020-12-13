@@ -34,7 +34,7 @@ funkcjonalność
 - grabber.is_open
 - marker.drop
 
-silnki
+silniki
 - set_value 
 - get_value 
 - keep_value (konflikty jako wyjątki)
@@ -58,7 +58,7 @@ Klasa zajmująca się zarządzaniem stosem tasków oraz łączeniem tasków z mo
 ## Task'i
 - taski jako parametryzowane stany w FSM ze stosem 
 - zadania wkonywane między cyklami (wykrywanie obiektów, rozpoznawanie otoczenia, diagnostyka)
-- każdy Task składałby się z dowolnie parametryzowanego konstruktora, start, update i cleanup.
+- każdy Task składałby się z dowolnie parametryzowanego konstruktora i event functions
 - możliwość konfigurowania update-rate 
 - forwardowan'ie obsługi FSM, czujników, akcji i silników do klasy Task przy użyciu `__getattr__` i podobnych funkcji
 - mały rozmiar i kompozycja
@@ -67,7 +67,7 @@ Klasa zajmująca się zarządzaniem stosem tasków oraz łączeniem tasków z mo
 def LocateAndDropMarker(controller, target):
     return TasksSequence([
         LocateOnTheGround(target),
-        FunctionTask(lambda: controller.marker.drop())
+        FunctionTask(lambda: controller.marker_dropper.drop())
     ])
 
 def LocateOnTheGround(controller, target):
@@ -80,7 +80,6 @@ def LocateOnTheGround(controller, target):
 class TasksSequence(Task):
     def __init__(controller, subtasks):
         super().__init__(controller)
-        self.target=target
         self.subtasks=subtasks
 
     def start(self):
@@ -98,9 +97,13 @@ class GoForwardUntilHoveringOver(Task):
         super().__init__(controller)
         self.target=target
 
-    def start(self):
+    # funkcja wykonywana gdy task przejmuje kontrolę
+    def configure_model(self):
+        # domyślna konfiguracja czyli np. kamera przednia, brak celu itp.
+        # jest wpisywana w Task.configure_model
+        # w ten sposób nie da się np. zapomnieć o przywróceniu kamery do stanu domyślnego
+        super().configure_model()
         self.vision.set_target(self.target)
-        self.saved_camera=self.camera_selector.selected
         self.camera_selector.select(Camera.BOTTOM)
         self.movement=Vector3.FORWARD*MAX_SPEED
 
@@ -109,10 +112,6 @@ class GoForwardUntilHoveringOver(Task):
             self.fail()
         if self.vision.has_value:
             self.succeed()
-
-    def cleanup(self):
-        self.camera_selector.select(self.saved_camera)
-        self.movement=Vector3.ZERO
 ```
 
 ## Konfiguracja
