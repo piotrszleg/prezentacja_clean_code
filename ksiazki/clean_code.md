@@ -147,7 +147,7 @@ class Task():
     def start(self):
         raise NotImplementedException()
 
-    def __getattr_(self, attr):
+    def __getattr__(self, attr):
         return self.components[attr]
 
 class BallLocationTask(Task):
