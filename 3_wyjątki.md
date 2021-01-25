@@ -47,3 +47,14 @@ Przykład, znęcanie się nad znakiem równości w Javascript'cie z [wtfjs](http
 Ja osobiście rozwiązałbym problem powyżej wyrzuceniem wyjątku w momencie porównywania obiektów różnego typu, a w miejscach gdzie te obiekty są traktowane jako klucze łapałbym ten wyjątek i traktował jako fałsz. 
 
 Ogólnie rzecz biorąc jasny i konkretny wyjątek wyrzucony na górze funkcji jest 100x lepszy niż jakiś `IndexOutOfBoundsException` w środku lub nawet gorzej: niepoprawnie działający program który nie zgłasza żadnych błedów.
+
+# Tworzenie obiektów wyjątków
+Typy wyjątków w dużych projektach powinny je dzielić na kategorie. W małych projektach jest sens używać `ValueError`, jednak im są one większe tym bardziej istotny jest ich sensowny podział.
+
+Jeżeli takich wyjątków jest dużo to można się zdecydować na stworzenie bardzo specyficznych wyjątków np. na stworzenie `EmptyDictionaryError` czy `ListSizeNotPowerOfTwo`.
+
+Oczywiście kluczowe są błędy typowe dla domeny, np.: `EngineLocked`.
+
+Wiadmość przekazywana w argumencie do konstruktora do wyjątku powinna umożliwić zrozumienie błędu bez czytania kodu źródłówego. Można też w niej przekazać dodatkowe wskazówki na temat możliwego powodu błędu.
+
+Jedyną cechą kategoryzującą wyjątki jest to, że mogą być rzucane i łapane. Jeżeli jest taka potrzeba to możemy w ich środku równie dobrze umieścić ilustracje czy stan systemu w momencie wystąpienia. Mechanizmu `raise-except` można także używać w niestandardowy sposób, na przykład do szybkiego wychodzenia z sekcji programu czy sygnalizowania że do wykonania zadania powinno się użyć innego modułu. Oczywiście im więcej *namieszamy* tym gorzej dla osób zaznajamiających się z projektem.
