@@ -6,6 +6,8 @@
 - lintery
 - disassembler'y - narzędzia pokazujące kod źródłowy skompilowany do kodu maszynowego lub po implementacji wysokopoziomowych konstrukcji jak pętle `foreach` niższymi, np.: [Compiler Explorer](https://godbolt.org/), moduł `dis` w Python'ie
 - **formatery** - możemy ustawić sobie formatowanie na skrócie klawiszowym lub przy zapisywaniu pliku w edytorze; dzięki temu możemy pisać kod kompletnie ignorując estetykę a formater będzie go formatował zgodnie ze wybraną przez nas konwencją *(prezentacja)*
+- spellchecker'y - sprawdzanie poprawności używanych nazw i komentarzy
+- Tabnine, Kite i inne pluginy do auto-uzupełniania kodu, zasada działania bardzo podobna do auto-uzupełniania w smartphonach
 
 ## Biblioteki
 - pytest / inne biblioteki do testowania
