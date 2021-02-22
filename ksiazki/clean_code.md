@@ -56,12 +56,12 @@ return result
 Oraz oczywiście wyjątki.
 ```python
 # nie:
-def find(array, element):
+def find(array, predicate):
     ...
     return None
 
 # tak:
-def find(array, element):
+def find(array, predicate):
     ...
     raise ElementNotFound()
 ```
