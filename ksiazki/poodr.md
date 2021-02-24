@@ -58,3 +58,5 @@ Przykład dwóch popularnych struktur rozrysowanych na takie grafy:
 MD_HTML  HTML_PDF
 
 ```
+
+[Przykład diagramu drona](../przyklady/DronDiagram.svg)
