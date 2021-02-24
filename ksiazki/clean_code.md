@@ -81,18 +81,86 @@ ponieważ każdy programista wie co oznacza ten skrót.
 - SOLID
     - **Single-responsibility principle**
     A class should only have a single responsibility, that is, only changes to one part of the software's specification should be able to affect the specification of the class.
+    ```python
+    def debug_print(self):
+        # make sure that the object is correct before printing ^^
+        self.name=self.name or names_generator.new_name()
+        # pretty print the object
+        print(f"(name=\"{name}\", size={self.size})")
+
+    # co się teraz dzieje: obiekt zapisujemy do bazy - wychodzi bład, pole name jest nullem
+    # próbujemy debugować - wszystko wydaje się być w porządku
+    # w końcu ktoś przekopuje się przez kilkaset linijek kodu, żeby odnaleźć ten oto kwiatek
+    
+    ```
     - **Open–closed principle**
     "Software entities ... should be open for extension, but closed for modification."
+    ```python
+    class FileReader:
+        def read():
+            ...
+
+    class BufferedFileReader(FileReader):
+        def read():
+            if len(self.buffer)==0:
+                for i in range(self.buffer.max_size):
+                    self.buffer.add(super().read())
+            return self.buffer.read()
+    ```
     - **Liskov substitution principle**
     "Objects in a program should be replaceable with instances of their subtypes without altering the correctness of that program." 
+    ```C#
+    // w dobrze napisanym kodzie obiektowym to po prostu działa,
+    // więc pokażę jak to w prosty sposób zepsuć
+
+    void Render(IPageController controller) {
+        (controller as FormController).AddStringInput("email");
+    }
+
+    // ktoś przekazuje do tej metody BasicPageController 
+    // (bo nigdzie nie miał napisane że nie może) i wychodzi mu błąd castowania; 
+    // najprostrze rozwiązanie - typ controllera jako argument generyczny klasy
+
+    // (w pythonie wystarczyłoby tylko wywołać tę metodę bez castowania)
+    ```
     - **Interface segregation principle**
     "Many client-specific interfaces are better than one general-purpose interface."
-    - **Dependency inversion principle**
-    One should "depend upon abstractions, [not] concretions."
+    ```C#
+    class Player : IDamagable, IItemPicker, IPushable {
+    
+    }
 
+    class Box : IPushable {
+    
+    }
+
+    class Worm : IDamagable, IPushable {
+    
+    }
+
+    class Pickup {
+        void OnEnter(IItemPicker picker){
+            picker.PickItem(item);
+        }
+    }
+    ```
+    - **Dependency inversion principle**
+    One should "depend upon abstractions, \[not\] concretions."
+    ```C++
+    // wyobraźmy sobie grę typu bullet-hell gdzie w przeciągu kilku sekund
+    // pojawia się i znika kilkadziesiąt pocisków
+    // klasa vector w C++ pozwala to znacząco zoptymalizować za pomocą argumentu
+    // generycznego allocator - obiektu alokującego i dealokującego pamięć
+    // dzięki temu można bardzo szczegółowo dobrać algorytm zarządzania pamięcią do sytuacji
+
+    // bez tego argumentu do każdej sytuacji trzeba by było pisać całą klasę vector od nowa
+
+    vector<Bullet, FastLinearAllocator<Bullet>> bullets;
+    bullets.push_back(Bullet(x, y));
+    ```
 ## Kapsułkowanie (Encapsulation) 
 - Tworzenie publicznego interfejsu klasy i ukrywanie prywatnych pól.
-- Komponenty powinny być widoczne tylko poprzez interfejs.
+- Komponenty powinny być widoczne tylko poprzez publiczny interfejs.
 
 ## Zawieranie się obiektów
 ```javascript
@@ -106,6 +174,7 @@ To utrudnia debugowanie i refactoring.
 ## Maksymalne rozbicie na metody i klasy 
 - jedna funkcja robi *jedną rzecz* 
     - częstym błędem jest wykonanie jakiejś funkcjonalności klasy w jej konstruktorze, powinien on tylko ustawić ją w poprawnym stanie początkowym
+    - całej funkcjonalności funkcji powinno się dać domyślić z jej nazwy
 - jedna klasa ma *jedną rolę*
 - warto powiedzieć sobie w myślach co robi funkcja lub klasa, zdanie które sformułujemy nie powinno być złożone. Przykłady rozbicia w zależności od użytych łączników zdań:
     - i - kompozycja
